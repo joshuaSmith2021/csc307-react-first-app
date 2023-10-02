@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 
 function TableHeader() {
     return (
@@ -8,7 +8,7 @@ function TableHeader() {
                 <th>Job</th>
             </tr>
       </thead>
-    );
+    )
 }
 
 function TableBody(props) {
@@ -24,15 +24,15 @@ function TableBody(props) {
 			</button>
 	  </td>
 	</tr>
-      );
+      )
      }
-    );
+    )
 
     return (
         <tbody>
           {rows}
          </tbody>
-     );
+     )
 }
 
 function Table (props) {
@@ -42,7 +42,7 @@ function Table (props) {
         <TableBody characterData={props.characterData} 
           removeCharacter={props.removeCharacter} />
       </table>
-    );
+    )
 }
 
-export default Table;
+export default Table
