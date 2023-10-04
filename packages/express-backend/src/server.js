@@ -48,9 +48,6 @@ app.get('/', (req, res) => {
     res.send('Hello World!')
 })
 
-const findUserByName = name =>
-    findUsersByPredicates(user => user['name'] === name)
-
 app.get('/users', (req, res) => {
     const name = req.query.name
     const job = req.query.job
@@ -65,12 +62,9 @@ app.get('/users', (req, res) => {
     res.send({users_list: findUsersByPredicates(...predicates)})
 })
 
-const findUserById = id =>
-    findUserByPredicates(user => user['id'] === id)
-
 app.get('/users/:id', (req, res) => {
     const id = req.params['id']  // or req.params.id
-    let result = findUserById(id)
+    let result = findUserByPredicates(user => user['id'] === id)
 
     if (result === undefined) {
         res.status(404).send('Resource not found.')
