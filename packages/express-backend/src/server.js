@@ -57,9 +57,12 @@ app.get('/users', (req, res) => {
     }
 })
 
-const findUserById = id =>
+const findUserByPredicates = (...predicates) =>
     users['users_list']
-        .find(user => user['id'] === id)
+        .find(user => predicates.every(predicate => predicate(user)))
+
+const findUserById = id =>
+    findUserByPredicates(user => user['id'] === id)
 
 app.get('/users/:id', (req, res) => {
     const id = req.params['id']  // or req.params.id
