@@ -38,24 +38,31 @@ const findUserByPredicates = (...predicates) =>
     users['users_list']
         .find(user => predicates.every(predicate => predicate(user)))
 
+const findUsersByPredicates = (...predicates) =>
+    users['users_list']
+        .filter(user => predicates.every(predicate => predicate(user)))
+
 app.use(express.json())
 
 app.get('/', (req, res) => {
     res.send('Hello World!')
 })
 
-const findUserByName = name => findUserByPredicates(user => user['name'] === name)
+const findUserByName = name =>
+    findUsersByPredicates(user => user['name'] === name)
 
 app.get('/users', (req, res) => {
     const name = req.query.name
+    const job = req.query.job
 
-    if (name != undefined) {
-        let result = findUserByName(name)
-        result = {users_list: result}
-        res.send(result)
-    } else {
-        res.send(users)
-    }
+    const predicates = []
+
+    if (name !== undefined)
+        predicates.push(user => user['name'] === name)
+    if (job !== undefined)
+        predicates.push(user => user['job'] === job)
+
+    res.send({users_list: findUsersByPredicates(...predicates)})
 })
 
 const findUserById = id =>
