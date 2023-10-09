@@ -37,6 +37,9 @@ const users = {
     ]
 }
 
+const generateId = () =>
+    Math.floor(Math.random() * 2 ** 32).toString(16)
+
 const findUserByPredicates = (...predicates) =>
     users['users_list']
         .find(user => predicates.every(predicate => predicate(user)))
@@ -83,8 +86,17 @@ const addUser = user => {
 
 app.post('/users', (req, res) => {
     const userToAdd = req.body
+
+    if (userToAdd['id']) {
+        res.status(400).send()
+        return
+    }
+
+    userToAdd['id'] = generateId()
+
     addUser(userToAdd)
-    res.status(201).send()
+
+    res.status(201).send(userToAdd)
 })
 
 const findUserIndexById = id =>
