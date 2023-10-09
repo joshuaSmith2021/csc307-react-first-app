@@ -6,12 +6,19 @@ import Table from './Table'
 function MyApp() {
   const [characters, setCharacters] = useState([])
 
-    function removeOneCharacter (index) {
-	    const updated = characters.filter((character, i) => {
-	        return i !== index
-	    })
+  function removeOneCharacter (index) {
+	  const updated = characters.filter((character, i) => i !== index)
+    const userToDelete = characters.find((character, i) => i === index)
+    const idToDelete = userToDelete['id']
 
-	  setCharacters(updated)
+    fetch(`http://localhost:8000/users/${idToDelete}`, {'method': 'DELETE'})
+      .then(response => {
+        if (response.status !== 204) {
+          throw new Error(`Received unexpected ${response.status} response`)
+        }
+      })
+      .then(() => setCharacters(updated))
+      .catch(e => console.error(e))
 	}
 
   function fetchUsers() {
