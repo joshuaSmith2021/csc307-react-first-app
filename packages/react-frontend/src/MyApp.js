@@ -1,5 +1,5 @@
 // src/MyApp.js
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import Form from './Form'
 import Table from './Table'
 
@@ -14,10 +14,21 @@ function MyApp() {
 	  setCharacters(updated)
 	}
 
-  // src/MyApp.js (a new function inside the MyApp function)
   function updateList(person) {
     setCharacters([...characters, person])
   }
+
+  function fetchUsers() {
+    const promise = fetch('http://localhost:8000/users')
+    return promise
+  }
+
+  useEffect(() => {
+    fetchUsers()
+      .then(res => res.json())
+      .then(json => setCharacters(json["users_list"]))
+      .catch(error => console.log(error))
+  }, [])
 
   return (
     <div className="container">
