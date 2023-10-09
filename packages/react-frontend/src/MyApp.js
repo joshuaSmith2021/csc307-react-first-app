@@ -44,6 +44,11 @@ function MyApp() {
 
   function updateList(person) {
     postUser(person)
+      .then(data => {
+        if (data.status !== 201) {
+          throw new Error(`Received unexpected ${data.status} response`)
+        }
+      })
       .then(() => setCharacters([...characters, person]))
       .catch((error) => {
         console.log(error)
