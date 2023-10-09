@@ -44,8 +44,12 @@ function MyApp() {
         if (data.status !== 201) {
           throw new Error(`Received unexpected ${data.status} response`)
         }
+
+        return data.json()
       })
-      .then(() => setCharacters([...characters, person]))
+      .then(data => {
+        setCharacters([...characters, data])
+      })
       .catch((error) => {
         console.log(error)
       })
